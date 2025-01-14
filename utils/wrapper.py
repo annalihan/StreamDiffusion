@@ -11,7 +11,7 @@ from PIL import Image
 
 from streamdiffusion import StreamDiffusion
 from streamdiffusion.image_utils import postprocess_image
-
+import matplotlib.pyplot as plt
 
 torch.set_grad_enabled(False)
 torch.backends.cuda.matmul.allow_tf32 = True
@@ -322,8 +322,21 @@ class StreamDiffusionWrapper:
         if isinstance(image, Image.Image):
             image = image.convert("RGB").resize((self.width, self.height))
 
+        # Convert image to numpy array
+        image_array = np.array(image)
+        
+        # Generate heatmap
+        heatmap = plt.imshow(image_array, cmap='hot', interpolation='nearest')
+        plt.axis('off')  # Hide axes
+        plt.colorbar(heatmap)  # Optional: add colorbar
+        plt.savefig('heatmap.png', bbox_inches='tight', pad_inches=0)  # Save heatmap as an image
+        plt.close()  # Close the plot
+        
+        # Load the heatmap image back into a tensor
+        heatmap_image = Image.open('heatmap.png')
+
         return self.stream.image_processor.preprocess(
-            image, self.height, self.width
+            heatmap_image, self.height, self.width
         ).to(device=self.device, dtype=self.dtype)
 
     def postprocess_image(
