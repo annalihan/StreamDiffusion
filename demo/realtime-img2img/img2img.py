@@ -18,11 +18,15 @@ from pydantic import BaseModel, Field
 from PIL import Image
 import math
 
-base_model = "stabilityai/sd-turbo"
+# base_model = "stabilityai/sd-turbo"
+base_model = "KBlueLeaf/kohaku-v2.1"
+# base_model = "D:\\td\ComfyUI_windows_portable\ComfyUI\models\checkpoints\\turbo\XLTurboAnima008_v12.safetensors"
 taesd_model = "madebyollin/taesd"
 
-default_prompt = "Portrait of The Joker halloween costume, face painting, with , glare pose, detailed, intricate, full of colour, cinematic lighting, trending on artstation, 8k, hyperrealistic, focused, extreme details, unreal engine 5 cinematic, masterpiece"
-default_negative_prompt = "black and white, blurry, low resolution, pixelated,  pixel art, low quality, low fidelity"
+# default_prompt = "Portrait of The Joker halloween costume, face painting, with , glare pose, detailed, intricate, full of colour, cinematic lighting, trending on artstation, 8k, hyperrealistic, focused, extreme details, unreal engine 5 cinematic, masterpiece"
+# default_negative_prompt = "black and white, blurry, low resolution, pixelated,  pixel art, low quality, low fidelity"
+default_prompt = "(colorful subject: 1.9), abstract simple background, figure outlined with dynamic colorful paint strokes, high contrast, vivid colors(simple background:1.9)"
+default_negative_prompt = "watermark, text, human"
 
 page_content = """<h1 class="text-3xl font-bold">StreamDiffusion</h1>
 <h3 class="text-xl font-bold">Image-to-Image SD-Turbo</h3>
@@ -99,7 +103,7 @@ class Pipeline:
             prompt=default_prompt,
             negative_prompt=default_negative_prompt,
             num_inference_steps=50,
-            guidance_scale=1.2,
+            guidance_scale=1.5,
         )
 
     def predict(self, params: "Pipeline.InputParams") -> Image.Image:
